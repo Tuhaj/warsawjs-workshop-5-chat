@@ -1,0 +1,19 @@
+{
+  "name": "warsawjs-workshop-5-chat",
+  "version": "1.0.0",
+  "description": "WebSocket based, NodeJS chat application for the purposes of 5th edition of WarsawJS Workshops",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tuhaj/warsawjs-workshop-5-chat.git"
+  },
+  "author": "Piotr Zientara",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tuhaj/warsawjs-workshop-5-chat/issues"
+  },
+  "homepage": "https://github.com/Tuhaj/warsawjs-workshop-5-chat#readme"
+}
