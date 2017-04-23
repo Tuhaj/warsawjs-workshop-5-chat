@@ -2,13 +2,15 @@ const io = require('socket.io');
 const socket = io();
 const USERS = {};
 
-socket.on('connection', (client) => {
-  console.log(`client with id: ${client.id}, connected!`);
-  client.on('message', (msg) => {
+function handleMessage(client) {
+  return (msg) => {
     console.log(msg);
     client.broadcast.emit('message', msg);
-  })
-  client.on('register', (userObject) => {
+  }
+}
+
+function handleRegister(client) {
+  return (userObject) => {
     if (USERS[userObject.username]) {
       client.emit('register', false);
     } else {
@@ -18,8 +20,11 @@ socket.on('connection', (client) => {
       };
       client.emit('register', true);
     };
-  })
-  client.on('login', (userObject) => {
+  }
+}
+
+function handleLogin(client) {
+  return (userObject) => {
     const user = USERS[userObject.username];
     if (user.password === userObject.password) {
       user.logged_in = true;
@@ -27,12 +32,23 @@ socket.on('connection', (client) => {
     } else {
       client.emit('login', false);
     }
-  })
+  }
+}
 
-  client.on('logout', (username) => {
+function handleLogout(client) {
+  return (username) => {
     const user = USERS[username];
     user.logged_in = false;
-  })
+  }
+}
+
+socket.on('connection', (client) => {
+  console.log(`client with id: ${client.id}, connected!`);
+  client.on('message', handleMessage(client));
+  client.on('register', handleRegister(client));
+  client.on('login', handleLogin(client));
+  client.on('logout', handleLogout(client));
 });
+
 socket.listen(3000);
 
