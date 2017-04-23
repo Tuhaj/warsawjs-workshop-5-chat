@@ -10,12 +10,22 @@ console.log('Client started!');
 
 socket.emit('message', "Hello Universe");
 socket.on('message', (msg) => {
-  console.log(`from server: ${msg}`);
+  clearPrompt();
+  console.log(`>> ${msg}`);
+  readline.prompt();
 });
 
 
 readline.on('line', (line) => {
-  socket.emit('message', line);
+  if (line.trim()) {
+    socket.emit('message', line);
+  }
+  readline.prompt();
 });
+
+function clearPrompt() {
+  process.stdout.cursorTo(0);
+  process.stdout.clearLine(0);
+}
 
 readline.prompt();
