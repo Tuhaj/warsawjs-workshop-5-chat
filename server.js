@@ -1,6 +1,6 @@
 const io = require('socket.io');
 const socket = io();
-const USERS = [];
+const USERS = {};
 
 socket.on('connection', (client) => {
   console.log(`client with id: ${client.id}, connected!`);
