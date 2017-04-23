@@ -8,6 +8,8 @@ const readline = require('readline').createInterface({
 
 console.log('Client started!');
 
+let LOGGED_USER = '';
+
 socket.on('message', (msg) => {
   clearPrompt();
   console.log(`>> ${msg}`);
@@ -22,6 +24,16 @@ socket.on('register', (registerSuccess) => {
     console.log('>> REGISTRATION FAILED');
   }
   readline.prompt();
+})
+
+socket.on('login', (username) => {
+  clearPrompt();
+  if (username) {
+    readline.setPrompt(`${username}: `);
+    LOGGED_USER = username;
+  } else {
+    console.log('>> LOGIN FAILED');
+  }
 })
 
 readline.on('line', (line) => {
@@ -40,20 +52,15 @@ readline.on('line', (line) => {
       username: lineArgs[1],
       password: lineArgs[2]
     });
+  } else if (firstWord === '/logout') {
+    socket.emit('logout', LOGGED_USER);
+    LOGGED_USER = '';
+    readline.setPrompt('> ');
   } else if (line.trim()) {
     socket.emit('message', line);
   }
   readline.prompt();
 });
-
-socket.on('login', (username) => {
-  clearPrompt();
-  if (username) {
-    readline.setPrompt(`${username}: `);
-  } else {
-    console.log('>> LOGIN FAILED');
-  }
-})
 
 function clearPrompt() {
   process.stdout.cursorTo(0);

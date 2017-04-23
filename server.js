@@ -28,6 +28,11 @@ socket.on('connection', (client) => {
       client.emit('login', false);
     }
   })
+
+  client.on('logout', (username) => {
+    const user = USERS[username];
+    user.logged_in = false;
+  })
 });
 socket.listen(3000);
 
